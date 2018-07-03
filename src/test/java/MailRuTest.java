@@ -59,15 +59,17 @@ public class MailRuTest {
         UUID subjectToMail = UUID.randomUUID();
         driver.findElement(By.name("Subject")).sendKeys(subjectToMail.toString());
         driver.switchTo().frame(driver.findElement(By.cssSelector("iframe")));
-        driver.findElement(By.cssSelector("#tinymce")).sendKeys("Text");
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#tinymce"))).sendKeys("Text");
 
         // save the mail as draft
         driver.switchTo().defaultContent();
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("#b-toolbar__right [data-name='saveDraft']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#b-toolbar__right [data-name='saveDraft']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-mnemo=\"saveStatus\"]")));
+
         //open drafts folder
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("[data-mnemo=\"drafts\"]")).click();
+        //Thread.sleep(5000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-mnemo=\"drafts\"]"))).click();
+        //driver.findElement(By.cssSelector("[data-mnemo=\"drafts\"]")).click();
         assertEquals(driver.getTitle(), "Новое письмо - Почта Mail.Ru");
         // assert that draft presents in the Draft folder
         Thread.sleep(5000);
@@ -94,6 +96,7 @@ public class MailRuTest {
         assertTrue(driver.findElement(By.cssSelector("#tinymce")).getText().contains("Text"), "Mail text is absent");
         driver.switchTo().defaultContent();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@data-name='send']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".message-sent__title")));
         // assert that the draft disappears from draft folder
         driver.findElement(By.cssSelector("[data-mnemo='drafts']")).click();
         Thread.sleep(5000);
