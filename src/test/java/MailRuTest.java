@@ -51,7 +51,7 @@ public class MailRuTest {
 
         // assert that the login was successful
         wait.until(ExpectedConditions.titleContains("Входящие - Почта Mail.Ru"));
-        assertEquals(driver.getTitle(), "Входящие - Почта Mail.Ru");
+        assertTrue(driver.getTitle().contains("Входящие - Почта Mail.Ru"));
 
         //Create a new mail
         WebElement newMailButton = driver.findElement(By.linkText("Написать письмо"));
